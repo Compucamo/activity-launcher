@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beargsm Bypass</title>
+    <title>Mega Activity Launcher PWA</title>
     
     <!-- Manifiesto embebido en Base64 para que sea instalable como App nativa -->
     <link rel="manifest" href="data:application/json;base64,ewogICJzaG9ydF9uYW1lIjogIk1lZ2FMYXVuY2hlciIsCiAgIm5hbWUiOiAiTWVnYSBYaWFvbWkgQWN0aXZpdHkgTGF1bmNoZXIgUE9BIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvNTczOC81NzM4MDMxLnBuZyIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIgogICAgfQogIF0sCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMTIxMjEyIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmNjcwMCIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0Igp9">
@@ -72,10 +72,18 @@
 </head>
 <body>
 
-    <h2>Beargsm Launcher 🚀</h2>
+    <h2>Mega Launcher 🚀</h2>
     <p>Acceso directo a configuraciones y aplicaciones del sistema</p>
     
     <button id="installBtn">📥 Instalar Aplicación</button>
+
+    <!-- NUEVA SECCIÓN: MODIFICACIONES AVANZADAS -->
+    <div class="category-title">🔑 Modificaciones Avanzadas</div>
+    <div class="btn-container">
+        <!-- El botón con la clase que enviaste configurado explícitamente -->
+        <a class="btn" href="intent:#Intent;launchFlags=0x10000000;component=com.android.settings/com.android.settings.password.SetupChooseLockGeneric;end" style="border-left-color: #d9534f;">🎯 Setup Choose Lock Generic</a>
+        <a class="btn" href="intent:#Intent;launchFlags=0x10000000;component=com.android.settings/com.android.settings.password.ChooseLockGeneric;end" style="border-left-color: #d9534f;">🔒 Choose Lock Generic estándar</a>
+    </div>
 
     <!-- PANELES GENERALES -->
     <div class="category-title">⚙️ Sistema y Ajustes</div>
@@ -128,7 +136,6 @@
     </div>
 
     <script>
-        // Carga dinámica del Service Worker en memoria
         if ('serviceWorker' in navigator) {
             const swCode = "self.addEventListener('fetch', function(event) { event.respondWith(fetch(event.request)); });";
             const blob = new Blob([swCode], { type: 'application/javascript' });
@@ -139,7 +146,6 @@
             .catch(err => console.log("Error de Service Worker:", err));
         }
 
-        // Controlador para detectar si la app se puede instalar
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();

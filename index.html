@@ -172,15 +172,16 @@
 
         // Construye la URL de Intent emulando las reglas nativas de Android
 function buildIntentUrl(pkg, cls, flag, extrasStr) {
-    // Si es la configuración general de Android, usamos su acción pública directa
+    // Caso especial: Ajustes Generales del Sistema
     if (pkg === "com.android.settings" && (cls === "com.android.settings.Settings" || cls.includes("SettingsHomepageActivity"))) {
         return `intent:#Intent;action=android.settings.SETTINGS;launchFlags=${flag};end`;
     }
     
-    // FORMATO DE FUERZA BRUTA: Eliminamos 'package=' y 'category=LAUNCHER'
-    // Esto evita que Chrome se desvíe a la Play Store si la actividad es interna o protegida
-    let base = `intent:#Intent;action=android.intent.action.MAIN;component=${pkg}/${cls};launchFlags=${flag};`;
+    // MOTOR AVANZADO: Forzado de componente con bloqueo de desvíos (Anti-Telcel y Anti-PlayStore)
+    // Usamos S.browser_fallback_url=javascript:void(0); para congelar el fallo si la app no tiene permisos
+    let base = `intent:#Intent;action=android.intent.action.VIEW;component=${pkg}/${cls};launchFlags=${flag};S.browser_fallback_url=javascript:void(0);`;
     
+    // Inyección de parámetros extra si existen
     if(extrasStr && extrasStr.includes('=')) {
         const parts = extrasStr.split('&');
         parts.forEach(p => {

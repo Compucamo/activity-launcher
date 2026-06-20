@@ -242,6 +242,7 @@ function buildIntentUrl(pkg, cls, flag, extrasStr) {
             }
 
         });
+        console.log(intent);
     }
 
     intent += "end";
@@ -296,7 +297,33 @@ function buildIntentUrl(pkg, cls, flag, extrasStr) {
             const ext = document.getElementById('customExtras').value.trim();
             
             if (pkg && cls) {
-                window.location.href = buildIntentUrl(pkg, cls, flag, ext);
+                document.getElementById('btnTestIntent').addEventListener('click', () => {
+
+    const pkg = document.getElementById('customPackage').value.trim();
+    const cls = document.getElementById('customClass').value.trim();
+    const flag = document.getElementById('customFlag').value;
+    const ext = document.getElementById('customExtras').value.trim();
+
+    if (!pkg || !cls) {
+        alert('Faltan el Paquete o la Clase.');
+        return;
+    }
+
+    const intentUrl = buildIntentUrl(pkg, cls, flag, ext);
+
+    console.log(intentUrl);
+
+    const a = document.createElement('a');
+    a.href = intentUrl;
+    a.style.display = 'none';
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+});
             } else {
                 alert('Faltan el Paquete o la Clase.');
             }

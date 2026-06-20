@@ -149,43 +149,66 @@
     </div>
 
     <div class="category-section">
-        <div class="category-title">🔑 Seguridad y FRP Testing</div>
+        <div class="category-title">🔑 Seguridad, Bloqueos y FRP Testing</div>
         <div class="btn-grid">
-            <a class="btn" href="intent:#Intent;action=android.app.action.SET_NEW_PASSWORD;launchFlags=0x10000000;end" style="border-left-color: var(--danger);"><span>🎯 Bloqueo Seguro Universal</span></a>
-            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.android.settings/com.android.settings.password.SetupChooseLockGeneric;end" style="border-left-color: var(--danger);"><span>🎯 Forzar Bloqueo Pantalla Nv.1</span></a>
-            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.google.android.setupwizard/com.google.android.setupwizard.deferred.DeferredTrampolineActivity;end" style="border-left-color: var(--google);"><span>🏁 Deferred Trampoline Setup</span></a>
+            <a class="btn" href="intent:#Intent;action=android.app.action.SET_NEW_PASSWORD;launchFlags=0x10000000;end" style="border-left-color: var(--danger);">🎯 Configurar Bloqueo Universal (Set password)</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.BIOMETRIC_ENROLL;launchFlags=0x10000000;end" style="border-left-color: var(--danger);">🔒 Agregar Datos Biométricos / PIN</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.android.settings/com.android.settings.password.SetupChooseLockGeneric;end" style="border-left-color: var(--danger);">🎯 Forzar Bloqueo de Pantalla Nv.1</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.google.android.setupwizard/com.google.android.setupwizard.deferred.DeferredTrampolineActivity;end" style="border-left-color: var(--google);">🏁 Deferred Trampoline (Setup Wizard)</a>
+            <a class="btn" href="intent://com.google.android.gms/#Intent;scheme=promote_smartlock_scheme;end" style="border-left-color: var(--google);">🤖 Google Smart Lock Config</a>
         </div>
     </div>
 
     <div class="category-section">
-        <div class="category-title">⚙️ Ingeniería y Radiofrecuencia</div>
+        <div class="category-title">🛠️ Hardware Log, CIT e Ingeniería</div>
         <div class="btn-grid">
-            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DEVELOPMENT_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--purple);"><span>💻 Opciones de Desarrollador</span></a>
-            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.RadioInfo;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);"><span>📶 Band Lock (RadioInfo 4G/5G)</span></a>
-            <a class="btn" href="intent:#Intent;action=android.provider.Telephony.SECRET_CODE;data=android_secret_code://6484;end" style="border-left-color: #e91e63;"><span>🔬 Menú CIT / Hardware (Xiaomi)</span></a>
-        <a class="btn"
-href="intent:#Intent;action=android.settings.SETTINGS;end"
-style="border-left-color:#28a745;">
-<span>⚙️ Ajustes Generales</span>
-</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DEVELOPMENT_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--purple);">💻 Opciones de Desarrollador</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.DevelopmentSettings;launchFlags=0x10000000;end" style="border-left-color: var(--purple);">🔌 Depuración USB (Acceso directo)</a>
+            <a class="btn" href="intent:#Intent;action=android.provider.Telephony.SECRET_CODE;data=android_secret_code://6484;end" style="border-left-color: #e91e63;">🔬 Menú CIT / Hardware Test (Xiaomi)</a>
+            <a class="btn" href="intent:#Intent;action=android.provider.Telephony.SECRET_CODE;data=android_secret_code://4636;end" style="border-left-color: #e91e63;">📊 Menú de Pruebas de Radio (*#*#4636#*#*)</a>
+        </div>
+    </div>
 
-<a class="btn"
-href="intent:#Intent;action=android.settings.WIFI_SETTINGS;end"
-style="border-left-color:#00bcd4;">
-<span>📶 Wi-Fi</span>
-</a>
+    <div class="category-section">
+        <div class="category-title">📡 Subprocesos de Conectividad Avanzada</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.RadioInfo;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);">📶 Forzar 4G / 5G Band Lock (RadioInfo)</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.TETHER_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);">🌐 Subproceso: Anclaje a Red / USB Hotspot</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.DATA_ROAMING_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);">🌍 Redes Móviles y Roaming</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.NFC_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);">💳 Ajustes e Interruptor NFC</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.WIFI_SETTINGS;launchFlags=0x10000000;end">📶 Configuración Wi-Fi Principal</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.BLUETOOTH_SETTINGS;launchFlags=0x10000000;end">🔹 Menú Bluetooth</a>
+        </div>
+    </div>
 
-<a class="btn"
-href="intent:#Intent;action=android.settings.APPLICATION_SETTINGS;end"
-style="border-left-color:#9c27b0;">
-<span>📱 Aplicaciones</span>
-</a>
+    <div class="category-section">
+        <div class="category-title">👤 Cuentas y Flujos de Autenticación</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.ADD_ACCOUNT_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--google);">➕ Forzar Agregar Cuenta (Google/OEM)</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity;launchFlags=0x10000000;end" style="border-left-color: var(--google);">🔑 Inicializar Login Google (MinuteMaid)</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.xiaomi.account/.ui.AccountSettingsActivity;launchFlags=0x10000000;end">🦊 Subproceso Mi Account (Cuenta Mi)</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.SYNC_SETTINGS;launchFlags=0x10000000;end">👤 Cuentas y Sincronización General</a>
+        </div>
+    </div>
 
-<a class="btn"
-href="intent:#Intent;action=android.settings.SECURITY_SETTINGS;end"
-style="border-left-color:#d9534f;">
-<span>🔒 Seguridad</span>
-</a>
+    <div class="category-section">
+        <div class="category-title">📦 Info de Aplicaciones Críticas</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.google.android.gms;launchFlags=0x10000000;end" style="border-left-color: #ffcd3a;">🤖 AppInfo: Servicios de Google Play</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.android.settings;launchFlags=0x10000000;end" style="border-left-color: #ffcd3a;">⚙️ AppInfo: Ajustes de Fábrica</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.android.chrome;launchFlags=0x10000000;end" style="border-left-color: #ffcd3a;">🌐 AppInfo: Navegador Chrome</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.MANAGE_APPLICATIONS_SETTINGS;launchFlags=0x10000000;end">📱 Ver Lista de Aplicaciones del Usuario</a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">⚙️ Sistema, Memoria y Core</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.INTERNAL_STORAGE_SETTINGS;launchFlags=0x10000000;end">💾 Diagnóstico de Almacenamiento Interno</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.DEVICE_INFO_SETTINGS;launchFlags=0x10000000;end">ℹ️ Estado y Acerca del Teléfono</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.ACCESSIBILITY_SETTINGS;launchFlags=0x10000000;end">♿ Menú de Accesibilidad</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.google.android.setupwizard/.SetupWizardActivity;launchFlags=0x10000000;end" style="border-left-color: var(--danger);">🧙‍♂️ Lanzar Google Setup Wizard Nativo</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.FallbackHome;launchFlags=0x10000000;end">🏠 Fallback Launcher (Home por Defecto)</a>
         </div>
     </div>
 

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beargsm Activity Launcher</title>
+    
+    <link rel="manifest" href="data:application/json;base64,ewogICJzaG9ydF9uYW1lIjogIk1lZ2FMYXVuY2hlciIsCiAgIm5hbWUiOiAiTWVnYSBYaWFvbWkgQWN0aXZpdHkgTGF1bmNoZXIgUE9BIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvNTczOC81NzM4MDMxLnBuZyIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIgogICAgfQogIF0sCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiYmFja2drcm91bmRfY29sb3IiOiAiIzEyMTIxMiIsCiAgInRoZW1lX2NvbG9yIjogIiNmZjY3MDAiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdCIKfQ==">
+    
+    <style>
+        :root {
+            --bg-main: #121212;
+            --bg-card: #1e1e1e;
+            --bg-hover: #252525;
+            --primary: #ff6700;
+            --danger: #d9534f;
+            --google: #4285F4;
+            --success: #28a745;
+            --purple: #9c27b0;
+            --cyan: #00bcd4;
+            --text-main: #ffffff;
+            --text-muted: #aaa;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background: var(--bg-main); color: var(--text-main); padding: 20px; padding-bottom: 60px;
+        }
+
+        header { max-width: 650px; margin: 0 auto 20px auto; text-align: center; }
+        h2 { color: var(--primary); margin-bottom: 5px; font-size: 26px; font-weight: 800; }
+        p { color: var(--text-muted); font-size: 14px; margin-bottom: 15px; }
+
+        .search-container { max-width: 650px; margin: 0 auto 20px auto; position: sticky; top: 10px; z-index: 100; }
+        .search-input {
+            width: 100%; padding: 16px 20px; background: rgba(30, 30, 30, 0.95);
+            border: 2px solid #333; border-radius: 14px; color: white; font-size: 16px; outline: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+        }
+
+        /* Contenedor Inyector Experto */
+        .injector-card {
+            background: var(--bg-card); border: 2px solid #333; border-radius: 14px;
+            padding: 20px; max-width: 650px; margin: 0 auto 30px auto; box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+        .injector-title { font-size: 15px; font-weight: bold; color: #ffcd3a; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .form-row { display: flex; gap: 10px; margin-bottom: 12px; }
+        .form-group { flex: 1; display: flex; flex-direction: column; }
+        .form-group label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+        .form-input { width: 100%; padding: 11px 14px; background: #121212; border: 1px solid #444; border-radius: 8px; color: white; font-size: 14px; outline: none; }
+        .form-input:focus { border-color: var(--primary); }
+        
+        .btn-group-actions { display: flex; gap: 10px; margin-top: 15px; }
+        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; color: white; transition: opacity 0.2s; }
+        .action-btn:active { opacity: 0.8; }
+        .btn-test { background: var(--google); }
+        .btn-save { background: var(--success); }
+
+        /* Herramientas de Base de Datos */
+        .db-ops { display: flex; gap: 10px; margin-top: 10px; justify-content: flex-end; }
+        .db-link { color: var(--text-muted); font-size: 12px; text-decoration: underline; cursor: pointer; background: none; border: none; }
+
+        .category-section { max-width: 650px; margin: 0 auto 30px auto; }
+        .category-title { color: var(--primary); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 12px; border-bottom: 2px solid #2d2d2d; padding-bottom: 6px; }
+        .btn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+        
+        .btn { 
+            background: var(--bg-card); color: var(--text-main); text-decoration: none; padding: 15px 16px; border-radius: 12px; 
+            font-weight: 600; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.15); display: flex; align-items: center; 
+            justify-content: space-between; text-align: left; border-left: 5px solid var(--primary); cursor: pointer;
+        }
+        .btn:active { transform: scale(0.98); background: var(--bg-hover); }
+        .delete-icon { color: var(--danger); font-size: 16px; font-weight: bold; padding-left: 10px; cursor: pointer; display: none; }
+        .custom-btn:hover .delete-icon { display: block; }
+
+        #installBtn { background: var(--success); display: none; margin: 10px auto 20px auto; padding: 12px 26px; border: none; color: white; border-radius: 30px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>BEAR GSM-TOOL LAUNCHER EXPERT</h2>
+        <p>Inyector de Actividades Avanzado • Emulación Butzist Engine</p>
+        <button id="installBtn">📥 Instalar Herramienta PWA</button>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar función, paquete o comando rápido...">
+    </div>
+
+    <div class="injector-card">
+        <div class="injector-title">
+            <span>🎛️ Inyector Avanzado de Intents</span>
+            <span style="color: var(--text-muted); font-size: 11px;">Mapeo Dinámico</span>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+                <label>Nombre Identificador</label>
+                <input type="text" id="customName" class="form-input" placeholder="Ej: Menú CIT Forzado">
+            </div>
+            <div class="form-group">
+                <label>Launch Flag</label>
+                <select id="customFlag" class="form-input" style="background: #121212;">
+                    <option value="0x10000000">NEW_TASK (0x10)</option>
+                    <option value="0x14000000">CLEAR_TASK (0x14)</option>
+                    <option value="0x20000000">SINGLE_TOP (0x20)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Paquete (Package)</label>
+                <input type="text" id="customPackage" class="form-input" placeholder="com.android.settings">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Clase de la Actividad (Class)</label>
+                <input type="text" id="customClass" class="form-input" placeholder="com.android.settings.RadioInfo">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Extras (Opcional - Formato: clave=valor)</label>
+                <input type="text" id="customExtras" class="form-input" placeholder="ej: show_fragment=SettingsHomepageActivity">
+            </div>
+        </div>
+
+        <div class="btn-group-actions">
+            <button class="action-btn btn-test" id="btnTestIntent">⚡ Lanzar Activity</button>
+            <button class="action-btn btn-save" id="btnSaveIntent">💾 Guardar a Base de Datos</button>
+        </div>
+
+        <div class="db-ops">
+            <button class="db-link" id="btnExport">📥 Exportar Backup (JSON)</button>
+            <button class="db-link" id="btnImport">📤 Importar Backup</button>
+            <input type="file" id="fileInput" style="display: none;" accept=".json">
+        </div>
+    </div>
+
+    <div class="category-section" id="customSection" style="display: none;">
+        <div class="category-title" style="color: #ffcd3a; border-bottom-color: #ffcd3a;">⭐ Mis Atajos e Inyecciones Guardadas</div>
+        <div class="btn-grid" id="customButtonsGrid"></div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">🔑 Seguridad, Bloqueos y FRP Testing</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.app.action.SET_NEW_PASSWORD;launchFlags=0x10000000;end" style="border-left-color: var(--danger);">🎯 Configurar Bloqueo Universal (Set password)</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.BIOMETRIC_ENROLL;launchFlags=0x10000000;end" style="border-left-color: var(--danger);">🔒 Agregar Datos Biométricos / PIN</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.android.settings/com.android.settings.password.SetupChooseLockGeneric;end" style="border-left-color: var(--danger);">🎯 Forzar Bloqueo de Pantalla Nv.1</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.google.android.setupwizard/com.google.android.setupwizard.deferred.DeferredTrampolineActivity;end" style="border-left-color: var(--google);">🏁 Deferred Trampoline (Setup Wizard)</a>
+            <a class="btn" href="intent://com.google.android.gms/#Intent;scheme=promote_smartlock_scheme;end" style="border-left-color: var(--google);">🤖 Google Smart Lock Config</a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">🛠️ Hardware Log, CIT e Ingeniería</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DEVELOPMENT_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--purple);">💻 Opciones de Desarrollador</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.DevelopmentSettings;launchFlags=0x10000000;end" style="border-left-color: var(--purple);">🔌 Depuración USB (Acceso directo)</a>
+            <a class="btn" href="intent:#Intent;action=android.provider.Telephony.SECRET_CODE;data=android_secret_code://6484;end" style="border-left-color: #e91e63;">🔬 Menú CIT / Hardware Test (Xiaomi)</a>
+            <a class="btn" href="intent:#Intent;action=android.provider.Telephony.SECRET_CODE;data=android_secret_code://4636;end" style="border-left-color: #e91e63;">📊 Menú de Pruebas de Radio (*#*#4636#*#*)</a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">📡 Subprocesos de Conectividad Avanzada</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.RadioInfo;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);">📶 Forzar 4G / 5G Band Lock (RadioInfo)</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.TETHER_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);">🌐 Subproceso: Anclaje a Red / USB Hotspot</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.DATA_ROAMING_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);">🌍 Redes Móviles y Roaming</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.NFC_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);">💳 Ajustes e Interruptor NFC</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.WIFI_SETTINGS;launchFlags=0x10000000;end">📶 Configuración Wi-Fi Principal</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.BLUETOOTH_SETTINGS;launchFlags=0x10000000;end">🔹 Menú Bluetooth</a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">👤 Cuentas y Flujos de Autenticación</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.ADD_ACCOUNT_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--google);">➕ Forzar Agregar Cuenta (Google/OEM)</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity;launchFlags=0x10000000;end" style="border-left-color: var(--google);">🔑 Inicializar Login Google (MinuteMaid)</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.xiaomi.account/.ui.AccountSettingsActivity;launchFlags=0x10000000;end">🦊 Subproceso Mi Account (Cuenta Mi)</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.SYNC_SETTINGS;launchFlags=0x10000000;end">👤 Cuentas y Sincronización General</a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">📦 Info de Aplicaciones Críticas</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.google.android.gms;launchFlags=0x10000000;end" style="border-left-color: #ffcd3a;">🤖 AppInfo: Servicios de Google Play</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.android.settings;launchFlags=0x10000000;end" style="border-left-color: #ffcd3a;">⚙️ AppInfo: Ajustes de Fábrica</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.android.chrome;launchFlags=0x10000000;end" style="border-left-color: #ffcd3a;">🌐 AppInfo: Navegador Chrome</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.MANAGE_APPLICATIONS_SETTINGS;launchFlags=0x10000000;end">📱 Ver Lista de Aplicaciones del Usuario</a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">⚙️ Sistema, Memoria y Core</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.INTERNAL_STORAGE_SETTINGS;launchFlags=0x10000000;end">💾 Diagnóstico de Almacenamiento Interno</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.DEVICE_INFO_SETTINGS;launchFlags=0x10000000;end">ℹ️ Estado y Acerca del Teléfono</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.ACCESSIBILITY_SETTINGS;launchFlags=0x10000000;end">♿ Menú de Accesibilidad</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.google.android.setupwizard/.SetupWizardActivity;launchFlags=0x10000000;end" style="border-left-color: var(--danger);">🧙‍♂️ Lanzar Google Setup Wizard Nativo</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.FallbackHome;launchFlags=0x10000000;end">🏠 Fallback Launcher (Home por Defecto)</a>
+        </div>
+    </div>
+
+<script>
+const customSection = document.getElementById('customSection');
+const customButtonsGrid = document.getElementById('customButtonsGrid');
+function buildIntentUrl(pkg, cls, flag, extrasStr) {
+
+    // Limpieza fuerte (MUY importante en MIUI)
+    pkg = (pkg || "").trim();
+    cls = (cls || "").trim().replace(/\s+/g, "");
+
+    if (!pkg || !cls) return "";
+
+    // 🔥 Fallback seguro para Ajustes
+    if (
+        pkg === "com.android.settings" &&
+        (cls === "com.android.settings.Settings" || cls.includes("Settings"))
+    ) {
+        return "intent:#Intent;action=android.settings.SETTINGS;end";
+    }
+
+    // Base intent
+    let intent = "intent:#Intent;";
+
+    intent += "action=android.intent.action.MAIN;";
+    intent += `package=${pkg};`;
+    intent += `component=${pkg}/${cls};`;
+    intent += `launchFlags=${flag || "0x10000000"};`;
+
+    // Extras (soporta S / i / B / l)
+    if (extrasStr && extrasStr.trim()) {
+
+        extrasStr.split("&").forEach(extra => {
+
+            const pair = extra.split("=");
+            if (pair.length !== 2) return;
+
+            let key = pair[0].trim();
+            let value = pair[1].trim();
+
+            // String
+            if (key.startsWith("S.")) {
+                intent += `${key}=${encodeURIComponent(value)};`;
+            }
+
+            // Integer
+            else if (key.startsWith("i.")) {
+                intent += `${key}=${parseInt(value || 0)};`;
+            }
+
+            // Boolean
+            else if (key.startsWith("B.")) {
+                intent += `${key}=${value === "true"};`;
+            }
+
+            // Long
+            else if (key.startsWith("l.")) {
+                intent += `${key}=${value};`;
+            }
+
+            // default string
+            else {
+                intent += `S.${key}=${encodeURIComponent(value)};`;
+            }
+        });
+    }
+
+    intent += "end";
+
+    console.log("INTENT GENERATED:", intent);
+
+    return intent;
+}
+
+function launchIntent(url) {
+    const a = document.createElement("a");
+    a.href = url;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+}
+
+function loadCustomIntents() {
+    const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
+
+    if (!saved.length) {
+        customSection.style.display = 'none';
+        return;
+    }
+
+    customSection.style.display = 'block';
+    customButtonsGrid.innerHTML = '';
+
+    saved.forEach((item, index) => {
+
+        const url = buildIntentUrl(
+            item.package,
+            item.class,
+            item.flag || '0x10000000',
+            item.extras || ''
+        );
+
+        const container = document.createElement('div');
+        container.className = 'btn custom-btn';
+        container.style.borderLeftColor = '#ffcd3a';
+
+        const btn = document.createElement('span');
+        btn.innerText = "⭐ " + item.name;
+        btn.style.cursor = "pointer";
+
+        btn.addEventListener('click', () => {
+            launchIntent(url);
+        });
+
+        const del = document.createElement('span');
+        del.innerText = "❌";
+        del.className = "delete-icon";
+
+        del.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteIntent(index);
+        });
+
+        container.appendChild(btn);
+        container.appendChild(del);
+        customButtonsGrid.appendChild(container);
+    });
+}
+
+function deleteIntent(index) {
+    const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
+    saved.splice(index, 1);
+    localStorage.setItem('bearGsmExpertIntents', JSON.stringify(saved));
+    loadCustomIntents();
+}
+
+// ✅ BOTÓN TEST (ARREGLADO)
+document.getElementById('btnTestIntent').addEventListener('click', () => {
+
+    const pkg = document.getElementById('customPackage').value.trim();
+    const cls = document.getElementById('customClass').value.trim();
+    const flag = document.getElementById('customFlag').value;
+    const ext = document.getElementById('customExtras').value.trim();
+
+    if (!pkg || !cls) {
+        alert('Faltan el Paquete o la Clase.');
+        return;
+    }
+
+    const url = buildIntentUrl(pkg, cls, flag, ext);
+    launchIntent(url);
+});
+
+// SAVE
+document.getElementById('btnSaveIntent').addEventListener('click', () => {
+
+    const name = document.getElementById('customName').value.trim() || 'Actividad';
+    const pkg = document.getElementById('customPackage').value.trim();
+    const cls = document.getElementById('customClass').value.trim();
+    const flag = document.getElementById('customFlag').value;
+    const ext = document.getElementById('customExtras').value.trim();
+
+    if (!pkg || !cls) {
+        alert('Faltan campos obligatorios');
+        return;
+    }
+
+    const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
+    saved.push({ name, package: pkg, class: cls, flag, extras: ext });
+
+    localStorage.setItem('bearGsmExpertIntents', JSON.stringify(saved));
+
+    document.getElementById('customName').value = '';
+    document.getElementById('customPackage').value = '';
+    document.getElementById('customClass').value = '';
+    document.getElementById('customExtras').value = '';
+
+    loadCustomIntents();
+});
+
+// EXPORT
+document.getElementById('btnExport').addEventListener('click', () => {
+    const data = localStorage.getItem('bearGsmExpertIntents') || '[]';
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'backup.json';
+    a.click();
+});
+
+// IMPORT
+document.getElementById('btnImport').addEventListener('click', () =>
+    document.getElementById('fileInput').click()
+);
+
+document.getElementById('fileInput').addEventListener('change', (e) => {
+
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (evt) {
+        try {
+            const parsed = JSON.parse(evt.target.result);
+
+            if (!Array.isArray(parsed)) throw new Error();
+
+            const valid = parsed.every(i => i.name && i.package && i.class);
+
+            if (!valid) throw new Error();
+
+            localStorage.setItem('bearGsmExpertIntents', JSON.stringify(parsed));
+
+            loadCustomIntents();
+
+            alert('Importado correctamente');
+
+        } catch (e) {
+            alert('Archivo inválido');
+        }
+    };
+
+    reader.readAsText(file);
+});
+
+// SEARCH
+document.getElementById('searchInput').addEventListener('input', (e) => {
+
+    const term = e.target.value.toLowerCase().trim();
+
+    document.querySelectorAll('.category-section').forEach(section => {
+
+        let match = false;
+
+        section.querySelectorAll('.btn').forEach(btn => {
+
+            const text = btn.textContent.toLowerCase();
+
+            if (text.includes(term)) {
+                btn.style.display = 'flex';
+                match = true;
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+
+        section.style.display = match ? 'block' : 'none';
+    });
+});
+
+loadCustomIntents();
+</script>
+
+</body>
+</html>

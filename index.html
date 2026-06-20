@@ -171,22 +171,26 @@
         const customButtonsGrid = document.getElementById('customButtonsGrid');
 
         // Construye la URL de Intent emulando las reglas nativas de Android
-        function buildIntentUrl(pkg, cls, flag, extrasStr) {
-            let base = `intent:#Intent;action=android.intent.action.MAIN;component=${pkg}/${cls};launchFlags=${flag};`;
-            if(extrasStr && extrasStr.includes('=')) {
-                const parts = extrasStr.split('&');
-                parts.forEach(p => {
-                    const pair = p.split('=');
-                    if(pair.length === 2) {
-                        // S. representa Extra tipo String en sintaxis de Intents de Android/Chrome
-                        base += `S.${pair[0]}=${encodeURIComponent(pair[1])};`; 
-                    }
-                });
+function buildIntentUrl(pkg, cls, flag, extrasStr) {
+    // Si es la configuración general, usamos la acción limpia del sistema
+    if (pkg === "com.android.settings" && (cls === "com.android.settings.Settings" || cls.includes("SettingsHomepageActivity"))) {
+        return `intent:#Intent;action=android.settings.SETTINGS;launchFlags=${flag};end`;
+    }
+    
+    // Para las demás actividades, quitamos el ACTION_MAIN genérico que causa el bucle en Chrome
+    let base = `intent:#Intent;component=${pkg}/${cls};launchFlags=${flag};`;
+    if(extrasStr && extrasStr.includes('=')) {
+        const parts = extrasStr.split('&');
+        parts.forEach(p => {
+            const pair = p.split('=');
+            if(pair.length === 2) {
+                base += `S.${pair[0]}=${encodeURIComponent(pair[1])};`; 
             }
-            base += 'end';
-            return base;
-        }
-
+        });
+    }
+    base += 'end';
+    return base;
+}
         function loadCustomIntents() {
             const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
             if (saved.length > 0) {

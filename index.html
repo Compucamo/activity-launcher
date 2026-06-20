@@ -5,153 +5,249 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beargsm Activity Launcher</title>
     
-    <!-- Manifiesto embebido en Base64 para que sea instalable como App nativa -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJzaG9ydF9uYW1lIjogIk1lZ2FMYXVuY2hlciIsCiAgIm5hbWUiOiAiTWVnYSBYaWFvbWkgQWN0aXZpdHkgTGF1bmNoZXIgUE9BIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvNTczOC81NzM4MDMxLnBuZyIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIgogICAgfQogIF0sCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMTIxMjEyIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmNjcwMCIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0Igp9">
+    <link rel="manifest" href="data:application/json;base64,ewogICJzaG9ydF9uYW1lIjogIk1lZ2FMYXVuY2hlciIsCiAgIm5hbWUiOiAiTWVnYSBYaWFvbWkgQWN0aXZpdHkgTGF1bmNoZXIgUE9BIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvNTczOC81NzM4MDMxLnBuZyIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIgogICAgfQogIF0sCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiYmFja2drcm91bmRfY29sb3IiOiAiIzEyMTIxMiIsCiAgInRoZW1lX2NvbG9yIjogIiNmZjY3MDAiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdCIKfQ==">
     
     <style>
+        :root {
+            --bg-main: #121212;
+            --bg-card: #1e1e1e;
+            --bg-hover: #2a2a2a;
+            --primary: #ff6700;
+            --danger: #d9534f;
+            --google: #4285F4;
+            --success: #28a745;
+            --text-main: #ffffff;
+            --text-muted: #aaa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body { 
-            font-family: Arial, sans-serif; 
-            background: #121212; 
-            color: white; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-main); 
             padding: 20px; 
-            text-align: center; 
+            padding-bottom: 60px;
         }
-        h2 { color: #ff6700; margin-bottom: 5px; }
-        p { color: #aaa; font-size: 14px; margin-bottom: 25px; }
+
+        header {
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            text-align: center;
+        }
+
+        h2 { color: var(--primary); margin-bottom: 5px; font-size: 24px; }
+        p { color: var(--text-muted); font-size: 14px; margin-bottom: 15px; }
+
+        /* Buscador */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 25px auto;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--bg-card);
+            border: 2px solid #333;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Contenedores de categorías */
+        .category-section {
+            max-width: 600px;
+            margin: 0 auto 25px auto;
+        }
+
         .category-title {
-            color: #ff6700;
-            font-size: 18px;
+            color: var(--primary);
+            font-size: 16px;
             font-weight: bold;
-            margin-top: 25px;
-            margin-bottom: 10px;
-            text-align: left;
-            border-bottom: 2px solid #333;
-            padding-bottom: 5px;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #2d2d2d;
+            padding-bottom: 6px;
         }
-        .btn-container { 
-            display: flex; 
-            flex-direction: column; 
+
+        /* Grid de Botones */
+        .btn-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
             gap: 12px; 
-            max-width: 400px; 
-            margin: 0 auto; 
         }
+
         .btn { 
-            background: #2a2a2a; 
-            color: white; 
+            background: var(--bg-card); 
+            color: var(--text-main); 
             text-decoration: none; 
-            padding: 15px; 
+            padding: 14px 16px; 
             border-radius: 10px; 
-            font-weight: bold; 
-            font-size: 15px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
-            display: block; 
+            font-weight: 600; 
+            font-size: 14px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15); 
+            display: flex;
+            align-items: center;
             text-align: left;
-            transition: background 0.2s;
-            border-left: 5px solid #ff6700;
+            transition: transform 0.15s, background 0.15s;
+            border-left: 5px solid var(--primary);
+            cursor: pointer;
         }
+
         .btn:active { 
-            background: #3a3a3a; 
+            transform: scale(0.98);
+            background: var(--bg-hover); 
         }
+
+        /* Botón de instalación */
         #installBtn { 
-            background: #28a745; 
+            background: var(--success); 
             display: none; 
-            margin: 20px auto; 
-            padding: 14px 28px; 
+            margin: 10px auto 20px auto; 
+            padding: 12px 24px; 
             border: none; 
             color: white; 
-            border-radius: 8px; 
+            border-radius: 30px; 
             font-weight: bold; 
-            font-size: 16px; 
+            font-size: 15px; 
             cursor: pointer; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
         }
     </style>
 </head>
 <body>
 
-    <h2>Beargsm Launcher</h2>
-    <p>Acceso directo a configuraciones y aplicaciones del sistema</p>
-    
-    <button id="installBtn">📥 Instalar Aplicación</button>
+    <header>
+        <h2>Beargsm Launcher</h2>
+        <p>Panel de accesos directos y diagnóstico del sistema</p>
+        <button id="installBtn">📥 Instalar App</button>
+    </header>
 
-    <!-- NUEVA SECCIÓN: MODIFICACIONES AVANZADAS -->
-    <div class="category-title">🔑 Modificaciones Avanzadas</div>
-    <div class="btn-container">
-        <!-- Acción oficial de Android para forzar la creación de un PIN/Patrón/Contraseña -->
-        <a class="btn" href="intent:#Intent;action=android.app.action.SET_NEW_PASSWORD;launchFlags=0x10000000;end" style="border-left-color: #d9534f;">🎯 Configurar Bloqueo Seguro (Universal)</a>
-        
-        <!-- Acción oficial para administrar las credenciales de seguridad del sistema -->
-        <a class="btn" href="intent:#Intent;action=android.settings.BIOMETRIC_ENROLL;launchFlags=0x10000000;end" style="border-left-color: #d9534f;">🔒 Configurar Datos Biométricos / PIN</a>
-
-        <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.android.settings/com.android.settings.password.SetupChooseLockGeneric;end" style="border-left-color: #d9534f;">
-        🎯 Ejecutar Bloqueo de Pantalla (Fuerza Bruta)
-        </a>
-        <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.google.android.setupwizard/com.google.android.setupwizard.deferred.DeferredTrampolineActivity;end" style="border-left-color: #4285F4;">
-        🏁 Iniciar Deferred Trampoline (Setup)
-        </a>
-        
-<a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=com.android.settings/com.android.settings.homepage.SettingsHomepageActivity;end" style="border-left-color: #ff6700;">
-    🏠 Abrir Configuración General (Fuerza Bruta)
-</a>
-        
-        <a class="btn" href="intent://com.google.android.gms/#Intent;scheme=promote_smartlock_scheme;end" style="border-left-color: #4285F4;">🤖 Google Smart Lock Scheme</a>
-
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar accesos o intents...">
     </div>
 
-    <!-- PANELES GENERALES -->
-    <div class="category-title">⚙️ Sistema y Ajustes</div>
-    <div class="btn-container">
-        <a class="btn" href="intent:#Intent;action=android.settings.SETTINGS;launchFlags=0x10000000;end">⚙️ Ajustes Generales</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.DEVICE_INFO_SETTINGS;launchFlags=0x10000000;end">ℹ️ Acerca del Teléfono</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.ACCESSIBILITY_SETTINGS;launchFlags=0x10000000;end">♿ Accesibilidad</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.USER_DICTIONARY_SETTINGS;launchFlags=0x10000000;end">🛠️ Administración General</a>
+    <div class="category-section">
+        <div class="category-title">🔑 Modificaciones Avanzadas</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.app.action.SET_NEW_PASSWORD;launchFlags=0x10000000;end" style="border-left-color: var(--danger);">🎯 Configurar Bloqueo Seguro (Universal)</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.BIOMETRIC_ENROLL;launchFlags=0x10000000;end" style="border-left-color: var(--danger);">🔒 Datos Biométricos / PIN</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.android.settings/com.android.settings.password.SetupChooseLockGeneric;end" style="border-left-color: var(--danger);">🎯 Bloqueo de Pantalla (Fuerza Bruta)</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.google.android.setupwizard/com.google.android.setupwizard.deferred.DeferredTrampolineActivity;end" style="border-left-color: var(--google);">🏁 Deferred Trampoline (Setup)</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=com.android.settings/com.android.settings.homepage.SettingsHomepageActivity;end">🏠 Ajustes Generales (Fuerza Bruta)</a>
+            <a class="btn" href="intent://com.google.android.gms/#Intent;scheme=promote_smartlock_scheme;end" style="border-left-color: var(--google);">🤖 Google Smart Lock Scheme</a>
+        </div>
     </div>
 
-    <!-- CONEXIONES -->
-    <div class="category-title">🌐 Conexiones inalámbricas</div>
-    <div class="btn-container">
-        <a class="btn" href="intent:#Intent;action=android.settings.WIFI_SETTINGS;launchFlags=0x10000000;end">📶 Configuración Wi-Fi</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.BLUETOOTH_SETTINGS;launchFlags=0x10000000;end">🔹 Bluetooth</a>
+    <div class="category-section">
+        <div class="category-title">🛠️ Desarrollo y Diagnóstico</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DEVELOPMENT_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: #9c27b0;">💻 Opciones de Desarrollador</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.DevelopmentSettings;launchFlags=0x10000000;end" style="border-left-color: #9c27b0;">🔌 Depuración USB Directa</a>
+            <a class="btn" href="intent:#Intent;action=android.provider.Telephony.SECRET_CODE;data=android_secret_code://6484;end" style="border-left-color: #e91e63;">🔬 Menú CIT / Hardware Test (*#*#6484#*#*)</a>
+            <a class="btn" href="intent:#Intent;action=android.provider.Telephony.SECRET_CODE;data=android_secret_code://4636;end" style="border-left-color: #e91e63;">📊 Información de Redes (*#*#4636#*#*)</a>
+        </div>
     </div>
 
-    <!-- PANTALLA Y SEGURIDAD -->
-    <div class="category-title">🔒 Pantalla y Seguridad</div>
-    <div class="btn-container">
-        <a class="btn" href="intent:#Intent;action=android.settings.DISPLAY_SETTINGS;launchFlags=0x10000000;end">🔆 Pantalla y Brillo</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.SECURITY_SETTINGS;launchFlags=0x10000000;end">🛡️ Seguridad General</a>
-        <a class="btn" href="intent:#Intent;action=android.app.action.SET_NEW_PASSWORD;launchFlags=0x10000000;end">🔑 Configurar Patrón / Bloqueo</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.LOCKSCREEN_SETTINGS;launchFlags=0x10000000;end">🔒 Pantalla de Bloqueo</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.SYNC_SETTINGS;launchFlags=0x10000000;end">👤 Cuentas y Respaldo</a>
+    <div class="category-section">
+        <div class="category-title">📦 Info de Apps (Borrar Datos/Caché)</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.google.android.gms;launchFlags=0x10000000;end" style="border-left-color: var(--google);">🤖 Info: Servicios de Google Play</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.android.settings;launchFlags=0x10000000;end">⚙️ Info: Ajustes del Sistema</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.android.chrome;launchFlags=0x10000000;end" style="border-left-color: #ffcd3a;">🌐 Info: Google Chrome</a>
+        </div>
     </div>
 
-    <!-- ENERGÍA Y BATERÍA -->
-    <div class="category-title">🔋 Energía y Rendimiento</div>
-    <div class="btn-container">
-        <a class="btn" href="intent:#Intent;action=android.intent.action.POWER_USAGE_SUMMARY;launchFlags=0x10000000;end">🔋 Uso de Batería</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS;launchFlags=0x10000000;end">🚀 Optimizar Batería</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.BATTERY_SAVER_SETTINGS;launchFlags=0x10000000;end">⚡ Ahorro Batería</a>
+    <div class="category-section">
+        <div class="category-title">⚙️ Sistema y Ajustes</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.SETTINGS;launchFlags=0x10000000;end">⚙️ Ajustes Generales</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.DEVICE_INFO_SETTINGS;launchFlags=0x10000000;end">ℹ️ Acerca del Teléfono</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.ACCESSIBILITY_SETTINGS;launchFlags=0x10000000;end">♿ Accesibilidad</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.CAPTIONING_SETTINGS;launchFlags=0x10000000;end">🗣️ Subtítulos / Idioma</a>
+        </div>
     </div>
 
-    <!-- APLICACIONES Y PERMISOS -->
-    <div class="category-title">📱 Aplicaciones y Alertas</div>
-    <div class="btn-container">
-        <a class="btn" href="intent:#Intent;action=android.settings.MANAGE_APPLICATIONS_SETTINGS;launchFlags=0x10000000;end">📱 Aplicaciones Instaladas</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS;launchFlags=0x10000000;end">🔓 Permisos para Leer Alertas</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.NOTIFICATION_SETTINGS;launchFlags=0x10000000;end">🔔 Notificaciones</a>
-        <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.android.chrome;launchFlags=0x10000000;end">🌐 Notificaciones de Google Chrome</a>
+    <div class="category-section">
+        <div class="category-title">🌐 Conexiones inalámbricas</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.WIFI_SETTINGS;launchFlags=0x10000000;end">📶 Configuración Wi-Fi</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.BLUETOOTH_SETTINGS;launchFlags=0x10000000;end">🔹 Bluetooth</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.VPN_SETTINGS;launchFlags=0x10000000;end">🔒 Configuración VPN</a>
+        </div>
     </div>
 
-    <!-- ENLACES DIRECTOS A TIENDAS / APPS -->
-    <div class="category-title">🛍️ Aplicaciones Externas</div>
-    <div class="btn-container" style="margin-bottom: 40px;">
-        <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.xiaomi.mipicks;launchFlags=0x10000000;end" style="border-left-color: #28a745;">🛍️ Mipicks (GetApps)</a>
-        <a class="btn" href="intent://details?id=de.szalkowski.activitylauncher#Intent;package=com.android.vending;scheme=market;launchFlags=0x10000000;end" style="border-left-color: #007bff;">🚀 Activity Launcher (En Play Store)</a>
+    <div class="category-section">
+        <div class="category-title">🔒 Pantalla y Seguridad</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.settings.DISPLAY_SETTINGS;launchFlags=0x10000000;end">🔆 Pantalla y Brillo</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.SECURITY_SETTINGS;launchFlags=0x10000000;end">🛡️ Seguridad General</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.LOCKSCREEN_SETTINGS;launchFlags=0x10000000;end">🔒 Pantalla de Bloqueo</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.SYNC_SETTINGS;launchFlags=0x10000000;end">👤 Cuentas y Respaldo</a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">🔋 Energía y Rendimiento</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.intent.action.POWER_USAGE_SUMMARY;launchFlags=0x10000000;end">🔋 Uso de Batería</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS;launchFlags=0x10000000;end">🚀 Optimizar Batería</a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <div class="category-title">🦊 Accesos Xiaomi / MIUI / HyperOS</div>
+        <div class="btn-grid">
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.xiaomi.account/.ui.AccountSettingsActivity;launchFlags=0x10000000;end" style="border-left-color: var(--primary);">👤 Cuenta Mi (Mi Account)</a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.xiaomi.mipicks;launchFlags=0x10000000;end" style="border-left-color: var(--success);">🛍️ Mipicks (GetApps)</a>
+        </div>
     </div>
 
     <script>
+        // Lógica del Buscador en tiempo real
+        const searchInput = document.getElementById('searchInput');
+        const buttons = document.querySelectorAll('.btn');
+        const sections = document.querySelectorAll('.category-section');
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase().trim();
+
+            sections.forEach(section => {
+                let hasVisibleButtons = false;
+                const sectionButtons = section.querySelectorAll('.btn');
+
+                sectionButtons.forEach(btn => {
+                    const text = btn.textContent.toLowerCase();
+                    if (text.includes(term)) {
+                        btn.style.display = 'flex';
+                        hasVisibleButtons = true;
+                    } else {
+                        btn.style.display = 'none';
+                    }
+                });
+
+                // Ocultar sección completa si no tiene botones que coincidan
+                section.style.display = hasVisibleButtons ? 'block' : 'none';
+            });
+        });
+
+        // Service Worker Embebido
         if ('serviceWorker' in navigator) {
             const swCode = "self.addEventListener('fetch', function(event) { event.respondWith(fetch(event.request)); });";
             const blob = new Blob([swCode], { type: 'application/javascript' });
@@ -162,6 +258,7 @@
             .catch(err => console.log("Error de Service Worker:", err));
         }
 
+        // Lógica de Instalación PWA
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();

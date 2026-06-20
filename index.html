@@ -22,343 +22,302 @@
             --text-muted: #aaa;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background: var(--bg-main); 
-            color: var(--text-main); 
-            padding: 20px; 
-            padding-bottom: 60px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background: var(--bg-main); color: var(--text-main); padding: 20px; padding-bottom: 60px;
         }
 
-        header {
-            max-width: 650px;
-            margin: 0 auto 20px auto;
-            text-align: center;
-        }
-
-        h2 { color: var(--primary); margin-bottom: 5px; font-size: 26px; font-weight: 800; letter-spacing: 0.5px; }
+        header { max-width: 650px; margin: 0 auto 20px auto; text-align: center; }
+        h2 { color: var(--primary); margin-bottom: 5px; font-size: 26px; font-weight: 800; }
         p { color: var(--text-muted); font-size: 14px; margin-bottom: 15px; }
 
-        /* Buscador */
-        .search-container {
-            max-width: 650px;
-            margin: 0 auto 20px auto;
-            position: sticky;
-            top: 10px;
-            z-index: 100;
-        }
-
+        .search-container { max-width: 650px; margin: 0 auto 20px auto; position: sticky; top: 10px; z-index: 100; }
         .search-input {
-            width: 100%;
-            padding: 16px 20px;
-            background: rgba(30, 30, 30, 0.95);
-            border: 2px solid #333;
-            border-radius: 14px;
-            color: white;
-            font-size: 16px;
-            outline: none;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            transition: border-color 0.2s;
-            backdrop-filter: blur(8px);
+            width: 100%; padding: 16px 20px; background: rgba(30, 30, 30, 0.95);
+            border: 2px solid #333; border-radius: 14px; color: white; font-size: 16px; outline: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5); backdrop-filter: blur(8px);
         }
 
-        .search-input:focus { border-color: var(--primary); }
-
-        /* Formulario Inyector de Componentes */
+        /* Contenedor Inyector Experto */
         .injector-card {
-            background: var(--bg-card);
-            border: 2px dashed #444;
-            border-radius: 14px;
-            padding: 20px;
-            max-width: 650px;
-            margin: 0 auto 30px auto;
+            background: var(--bg-card); border: 2px solid #333; border-radius: 14px;
+            padding: 20px; max-width: 650px; margin: 0 auto 30px auto; box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
-
-        .injector-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #ffcd3a;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            text-align: left;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 10px 14px;
-            background: #121212;
-            border: 1px solid #444;
-            border-radius: 8px;
-            color: white;
-            font-size: 14px;
-            outline: none;
-        }
-
+        .injector-title { font-size: 15px; font-weight: bold; color: #ffcd3a; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        .form-row { display: flex; gap: 10px; margin-bottom: 12px; }
+        .form-group { flex: 1; display: flex; flex-direction: column; }
+        .form-group label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+        .form-input { width: 100%; padding: 11px 14px; background: #121212; border: 1px solid #444; border-radius: 8px; color: white; font-size: 14px; outline: none; }
         .form-input:focus { border-color: var(--primary); }
-
-        .btn-group-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .action-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            color: white;
-            transition: background 0.2s;
-        }
+        
+        .btn-group-actions { display: flex; gap: 10px; margin-top: 15px; }
+        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; color: white; transition: opacity 0.2s; }
+        .action-btn:active { opacity: 0.8; }
         .btn-test { background: var(--google); }
         .btn-save { background: var(--success); }
 
-        /* Contenedores de categorías */
-        .category-section {
-            max-width: 650px;
-            margin: 0 auto 30px auto;
-        }
+        /* Herramientas de Base de Datos */
+        .db-ops { display: flex; gap: 10px; margin-top: 10px; justify-content: flex-end; }
+        .db-link { color: var(--text-muted); font-size: 12px; text-decoration: underline; cursor: pointer; background: none; border: none; }
 
-        .category-title {
-            color: var(--primary);
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 12px;
-            border-bottom: 2px solid #2d2d2d;
-            padding-bottom: 6px;
-        }
-
-        /* Grid de Botones */
-        .btn-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 12px; 
-        }
-
+        .category-section { max-width: 650px; margin: 0 auto 30px auto; }
+        .category-title { color: var(--primary); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 12px; border-bottom: 2px solid #2d2d2d; padding-bottom: 6px; }
+        .btn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+        
         .btn { 
-            background: var(--bg-card); 
-            color: var(--text-main); 
-            text-decoration: none; 
-            padding: 15px 16px; 
-            border-radius: 12px; 
-            font-weight: 600; 
-            font-size: 14px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15); 
-            display: flex;
-            align-items: center;
-            text-align: left;
-            transition: transform 0.1s, background 0.1s;
-            border-left: 5px solid var(--primary);
-            cursor: pointer;
-            line-height: 1.3;
+            background: var(--bg-card); color: var(--text-main); text-decoration: none; padding: 15px 16px; border-radius: 12px; 
+            font-weight: 600; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.15); display: flex; align-items: center; 
+            justify-content: space-between; text-align: left; border-left: 5px solid var(--primary); cursor: pointer;
         }
+        .btn:active { transform: scale(0.98); background: var(--bg-hover); }
+        .delete-icon { color: var(--danger); font-size: 16px; font-weight: bold; padding-left: 10px; cursor: pointer; display: none; }
+        .custom-btn:hover .delete-icon { display: block; }
 
-        .btn:active { transform: scale(0.97); background: var(--bg-hover); }
-
-        /* Botón de instalación */
-        #installBtn { 
-            background: var(--success); 
-            display: none; 
-            margin: 10px auto 20px auto; 
-            padding: 12px 26px; 
-            border: none; 
-            color: white; 
-            border-radius: 30px; 
-            font-weight: bold; 
-            font-size: 15px; 
-            cursor: pointer; 
-        }
+        #installBtn { background: var(--success); display: none; margin: 10px auto 20px auto; padding: 12px 26px; border: none; color: white; border-radius: 30px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
-        <h2>BEAR GSM-TOOL LAUNCHER</h2>
-        <p>Panel Técnico Integrado • Mapeo Directo de Actividades (Package/Class)</p>
-        <button id="installBtn">📥 Instalar Herramienta</button>
+        <h2>BEAR GSM-TOOL LAUNCHER EXPERT</h2>
+        <p>Inyector de Actividades Avanzado • Emulación Butzist Engine</p>
+        <button id="installBtn">📥 Instalar Herramienta PWA</button>
     </header>
 
     <div class="search-container">
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Filtrar por función, subproceso o comando...">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar función, paquete o comando rápido...">
     </div>
 
     <div class="injector-card">
-        <div class="injector-title">🔌 Clonador de Actividades (Mapeo Manual)</div>
-        <div class="form-group">
-            <label>Nombre del Acceso Directo</label>
-            <input type="text" id="customName" class="form-input" placeholder="Ej: Mi menú oculto de testing">
+        <div class="injector-title">
+            <span>🎛️ Inyector Avanzado de Intents</span>
+            <span style="color: var(--text-muted); font-size: 11px;">Mapeo Dinámico</span>
         </div>
-        <div class="form-group">
-            <label>Paquete (Package)</label>
-            <input type="text" id="customPackage" class="form-input" placeholder="com.android.settings">
+        
+        <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+                <label>Nombre Identificador</label>
+                <input type="text" id="customName" class="form-input" placeholder="Ej: Menú CIT Forzado">
+            </div>
+            <div class="form-group">
+                <label>Launch Flag</label>
+                <select id="customFlag" class="form-input" style="background: #121212;">
+                    <option value="0x10000000">NEW_TASK (0x10)</option>
+                    <option value="0x14000000">CLEAR_TASK (0x14)</option>
+                    <option value="0x20000000">SINGLE_TOP (0x20)</option>
+                </select>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Clase (Class)</label>
-            <input type="text" id="customClass" class="form-input" placeholder="com.android.settings.RadioInfo">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Paquete (Package)</label>
+                <input type="text" id="customPackage" class="form-input" placeholder="com.android.settings">
+            </div>
         </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Clase de la Actividad (Class)</label>
+                <input type="text" id="customClass" class="form-input" placeholder="com.android.settings.RadioInfo">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Extras (Opcional - Formato: clave=valor)</label>
+                <input type="text" id="customExtras" class="form-input" placeholder="ej: show_fragment=SettingsHomepageActivity">
+            </div>
+        </div>
+
         <div class="btn-group-actions">
-            <button class="action-btn btn-test" id="btnTestIntent">🎯 Ejecutar Actividad</button>
-            <button class="action-btn btn-save" id="btnSaveIntent">💾 Guardar en Panel</button>
+            <button class="action-btn btn-test" id="btnTestIntent">⚡ Lanzar Activity</button>
+            <button class="action-btn btn-save" id="btnSaveIntent">💾 Guardar a Base de Datos</button>
+        </div>
+
+        <div class="db-ops">
+            <button class="db-link" id="btnExport">📥 Exportar Backup (JSON)</button>
+            <button class="db-link" id="btnImport">📤 Importar Backup</button>
+            <input type="file" id="fileInput" style="display: none;" accept=".json">
         </div>
     </div>
 
     <div class="category-section" id="customSection" style="display: none;">
-        <div class="category-title" style="color: #ffcd3a; border-bottom-color: #ffcd3a;">⭐ Actividades Personalizadas Guardadas</div>
-        <div class="btn-grid" id="customButtonsGrid">
-            </div>
+        <div class="category-title" style="color: #ffcd3a; border-bottom-color: #ffcd3a;">⭐ Mis Atajos e Inyecciones Guardadas</div>
+        <div class="btn-grid" id="customButtonsGrid"></div>
     </div>
 
     <div class="category-section">
-        <div class="category-title">🔑 Seguridad, Bloqueos y FRP Testing</div>
+        <div class="category-title">🔑 Seguridad y FRP Testing</div>
         <div class="btn-grid">
-            <a class="btn" href="intent:#Intent;action=android.app.action.SET_NEW_PASSWORD;launchFlags=0x10000000;end" style="border-left-color: var(--danger);">🎯 Configurar Bloqueo Universal (Set password)</a>
-            <a class="btn" href="intent:#Intent;action=android.settings.BIOMETRIC_ENROLL;launchFlags=0x10000000;end" style="border-left-color: var(--danger);">🔒 Agregar Datos Biométricos / PIN</a>
-            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.android.settings/com.android.settings.password.SetupChooseLockGeneric;end" style="border-left-color: var(--danger);">🎯 Forzar Bloqueo de Pantalla Nv.1</a>
-            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.google.android.setupwizard/com.google.android.setupwizard.deferred.DeferredTrampolineActivity;end" style="border-left-color: var(--google);">🏁 Deferred Trampoline (Setup Wizard)</a>
+            <a class="btn" href="intent:#Intent;action=android.app.action.SET_NEW_PASSWORD;launchFlags=0x10000000;end" style="border-left-color: var(--danger);"><span>🎯 Bloqueo Seguro Universal</span></a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.android.settings/com.android.settings.password.SetupChooseLockGeneric;end" style="border-left-color: var(--danger);"><span>🎯 Forzar Bloqueo Pantalla Nv.1</span></a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;launchFlags=0x14000000;component=com.google.android.setupwizard/com.google.android.setupwizard.deferred.DeferredTrampolineActivity;end" style="border-left-color: var(--google);"><span>🏁 Deferred Trampoline Setup</span></a>
         </div>
     </div>
 
     <div class="category-section">
-        <div class="category-title">🛠️ Hardware Log, CIT e Ingeniería</div>
+        <div class="category-title">⚙️ Ingeniería y Radiofrecuencia</div>
         <div class="btn-grid">
-            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DEVELOPMENT_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--purple);">💻 Opciones de Desarrollador</a>
-            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.DevelopmentSettings;launchFlags=0x10000000;end" style="border-left-color: var(--purple);">🔌 Depuración USB (Acceso directo)</a>
-            <a class="btn" href="intent:#Intent;action=android.provider.Telephony.SECRET_CODE;data=android_secret_code://6484;end" style="border-left-color: #e91e63;">🔬 Menú CIT / Hardware Test (Xiaomi)</a>
-            <a class="btn" href="intent:#Intent;action=android.provider.Telephony.SECRET_CODE;data=android_secret_code://4636;end" style="border-left-color: #e91e63;">📊 Menú de Pruebas de Radio (*#*#4636#*#*)</a>
-        </div>
-    </div>
-
-    <div class="category-section">
-        <div class="category-title">📡 Subprocesos de Conectividad Avanzada</div>
-        <div class="btn-grid">
-            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.RadioInfo;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);">📶 Forzar 4G / 5G Band Lock (RadioInfo)</a>
-            <a class="btn" href="intent:#Intent;action=android.settings.TETHER_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);">🌐 Subproceso: Anclaje a Red / USB Hotspot</a>
-            <a class="btn" href="intent:#Intent;action=android.settings.WIFI_SETTINGS;launchFlags=0x10000000;end">📶 Configuración Wi-Fi Principal</a>
-            <a class="btn" href="intent:#Intent;action=android.settings.BLUETOOTH_SETTINGS;launchFlags=0x10000000;end">🔹 Menú Bluetooth</a>
-        </div>
-    </div>
-
-    <div class="category-section">
-        <div class="category-title">👤 Cuentas y Flujos de Autenticación</div>
-        <div class="btn-grid">
-            <a class="btn" href="intent:#Intent;action=android.settings.ADD_ACCOUNT_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--google);">➕ Forzar Agregar Cuenta (Google/OEM)</a>
-            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity;launchFlags=0x10000000;end" style="border-left-color: var(--google);">🔑 Inicializar Login Google (MinuteMaid)</a>
-            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DETAILS_SETTINGS;data=package:com.google.android.gms;launchFlags=0x10000000;end" style="border-left-color: #ffcd3a;">🤖 AppInfo: Servicios de Google Play</a>
+            <a class="btn" href="intent:#Intent;action=android.settings.APPLICATION_DEVELOPMENT_SETTINGS;launchFlags=0x10000000;end" style="border-left-color: var(--purple);"><span>💻 Opciones de Desarrollador</span></a>
+            <a class="btn" href="intent:#Intent;action=android.intent.action.MAIN;component=com.android.settings/.RadioInfo;launchFlags=0x10000000;end" style="border-left-color: var(--cyan);"><span>📶 Band Lock (RadioInfo 4G/5G)</span></a>
+            <a class="btn" href="intent:#Intent;action=android.provider.Telephony.SECRET_CODE;data=android_secret_code://6484;end" style="border-left-color: #e91e63;"><span>🔬 Menú CIT / Hardware (Xiaomi)</span></a>
         </div>
     </div>
 
     <script>
-        // Lógica de inyección y guardado dinámico
         const customSection = document.getElementById('customSection');
         const customButtonsGrid = document.getElementById('customButtonsGrid');
 
-        // Cargar actividades personalizadas guardadas previamente de la memoria local
+        // Construye la URL de Intent emulando las reglas nativas de Android
+        function buildIntentUrl(pkg, cls, flag, extrasStr) {
+            let base = `intent:#Intent;action=android.intent.action.MAIN;component=${pkg}/${cls};launchFlags=${flag};`;
+            if(extrasStr && extrasStr.includes('=')) {
+                const parts = extrasStr.split('&');
+                parts.forEach(p => {
+                    const pair = p.split('=');
+                    if(pair.length === 2) {
+                        // S. representa Extra tipo String en sintaxis de Intents de Android/Chrome
+                        base += `S.${pair[0]}=${encodeURIComponent(pair[1])};`; 
+                    }
+                });
+            }
+            base += 'end';
+            return base;
+        }
+
         function loadCustomIntents() {
-            const saved = JSON.parse(localStorage.getItem('bearGsmCustomIntents')) || [];
+            const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
             if (saved.length > 0) {
                 customSection.style.display = 'block';
                 customButtonsGrid.innerHTML = '';
                 saved.forEach((item, index) => {
-                    const intentUrl = `intent:#Intent;action=android.intent.action.MAIN;component=${item.package}/${item.class};launchFlags=0x10000000;end`;
-                    const btn = document.createElement('a');
-                    btn.className = 'btn';
-                    btn.style.borderLeftColor = '#ffcd3a';
-                    btn.href = intentUrl;
-                    btn.innerHTML = `⭐ ${item.name}`;
-                    customButtonsGrid.appendChild(btn);
+                    const intentUrl = buildIntentUrl(item.package, item.class, item.flag || '0x10000000', item.extras || '');
+                    
+                    const container = document.createElement('div');
+                    container.className = 'btn custom-btn';
+                    container.style.borderLeftColor = '#ffcd3a';
+                    
+                    const link = document.createElement('span');
+                    link.style.cursor = 'pointer';
+                    link.innerText = `⭐ ${item.name}`;
+                    link.addEventListener('click', () => window.location.href = intentUrl);
+                    
+                    const del = document.createElement('span');
+                    del.className = 'delete-icon';
+                    del.innerText = '❌';
+                    del.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteIntent(index);
+                    });
+
+                    container.appendChild(link);
+                    container.appendChild(del);
+                    customButtonsGrid.appendChild(container);
                 });
+            } else {
+                customSection.style.display = 'none';
             }
         }
 
-        // Ejecución de prueba inmediata sin guardar
+        function deleteIntent(index) {
+            const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
+            saved.splice(index, 1);
+            localStorage.setItem('bearGsmExpertIntents', JSON.stringify(saved));
+            loadCustomIntents();
+        }
+
         document.getElementById('btnTestIntent').addEventListener('click', () => {
             const pkg = document.getElementById('customPackage').value.trim();
             const cls = document.getElementById('customClass').value.trim();
+            const flag = document.getElementById('customFlag').value;
+            const ext = document.getElementById('customExtras').value.trim();
+            
             if (pkg && cls) {
-                const testUrl = `intent:#Intent;action=android.intent.action.MAIN;component=${pkg}/${cls};launchFlags=0x10000000;end`;
-                window.location.href = testUrl;
+                window.location.href = buildIntentUrl(pkg, cls, flag, ext);
             } else {
-                alert('Por favor rellena los campos de Paquete y Clase.');
+                alert('Faltan el Paquete o la Clase.');
             }
         });
 
-        // Guardar permanentemente en la app
         document.getElementById('btnSaveIntent').addEventListener('click', () => {
-            const name = document.getElementById('customName').value.trim() || 'Actividad Manual';
+            const name = document.getElementById('customName').value.trim() || 'Actividad Guardada';
             const pkg = document.getElementById('customPackage').value.trim();
             const cls = document.getElementById('customClass').value.trim();
+            const flag = document.getElementById('customFlag').value;
+            const ext = document.getElementById('customExtras').value.trim();
 
             if (pkg && cls) {
-                const saved = JSON.parse(localStorage.getItem('bearGsmCustomIntents')) || [];
-                saved.push({ name, package: pkg, class: cls });
-                localStorage.setItem('bearGsmCustomIntents', JSON.stringify(saved));
+                const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
+                saved.push({ name, package: pkg, class: cls, flag, extras: ext });
+                localStorage.setItem('bearGsmExpertIntents', JSON.stringify(saved));
                 
-                // Limpiar inputs y recargar sección
+                // Reset inputs
                 document.getElementById('customName').value = '';
                 document.getElementById('customPackage').value = '';
                 document.getElementById('customClass').value = '';
+                document.getElementById('customExtras').value = '';
                 loadCustomIntents();
             } else {
-                alert('Por favor rellena los campos de Paquete y Clase.');
+                alert('Faltan campos obligatorios (Paquete/Clase).');
             }
         });
 
-        // Buscador inteligente en tiempo real
-        const searchInput = document.getElementById('searchInput');
-        const sections = document.querySelectorAll('.category-section');
+        // Backup Engine
+        document.getElementById('btnExport').addEventListener('click', () => {
+            const data = localStorage.getItem('bearGsmExpertIntents') || '[]';
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'BearGsm_Backup_Activities.json';
+            a.click();
+        });
 
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase().trim();
-            sections.forEach(section => {
-                let hasMatch = false;
-                const buttons = section.querySelectorAll('.btn');
-                buttons.forEach(btn => {
-                    const text = btn.textContent.toLowerCase();
-                    const href = btn.getAttribute('href').toLowerCase(); 
-                    if (text.includes(term) || href.includes(term)) {
-                        btn.style.display = 'flex';
-                        hasMatch = true;
-                    } else {
-                        btn.style.display = 'none';
+        document.getElementById('btnImport').addEventListener('click', () => document.getElementById('fileInput').click());
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const parsed = JSON.parse(evt.target.result);
+                    if(Array.isArray(parsed)) {
+                        localStorage.setItem('bearGsmExpertIntents', JSON.stringify(parsed));
+                        loadCustomIntents();
+                        alert('Base de Datos importada con éxito.');
                     }
+                } catch(err) { alert('Archivo de backup inválido.'); }
+            };
+            reader.readAsText(file);
+        });
+
+        // Buscador
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase().trim();
+            document.querySelectorAll('.category-section').forEach(section => {
+                let match = false;
+                section.querySelectorAll('.btn').forEach(btn => {
+                    if (btn.textContent.toLowerCase().includes(term) || (btn.getAttribute('href') && btn.getAttribute('href').toLowerCase().includes(term))) {
+                        btn.style.display = 'flex'; match = true;
+                    } else { btn.style.display = 'none'; }
                 });
-                section.style.display = hasMatch ? 'block' : 'none';
+                section.style.display = match ? 'block' : 'none';
             });
         });
 
-        // Service Worker para funcionamiento Offline
+        // PWA Setup
         if ('serviceWorker' in navigator) {
-            const swCode = "self.addEventListener('fetch', function(event) { event.respondWith(fetch(event.request)); });";
+            const swCode = "self.addEventListener('fetch', function(e) { e.respondWith(fetch(e.request)); });";
             const blob = new Blob([swCode], { type: 'application/javascript' });
-            const swUrl = URL.createObjectURL(blob);
-            navigator.serviceWorker.register(swUrl, { scope: './' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob), { scope: './' });
         }
 
-        // Inicializar al cargar la página
+        let defPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); defPrompt = e; document.getElementById('installBtn').style.display = 'block'; });
+        document.getElementById('installBtn').addEventListener('click', async () => { if (defPrompt) { defPrompt.prompt(); const { outcome } = await defPrompt.userChoice; if (outcome === 'accepted') document.getElementById('installBtn').style.display = 'none'; defPrompt = null; } });
+
         loadCustomIntents();
     </script>
 </body>

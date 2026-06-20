@@ -189,14 +189,12 @@ style="border-left-color:#d9534f;">
         </div>
     </div>
 
-    <script>
-        const customSection = document.getElementById('customSection');
-        const customButtonsGrid = document.getElementById('customButtonsGrid');
+<script>
+const customSection = document.getElementById('customSection');
+const customButtonsGrid = document.getElementById('customButtonsGrid');
 
-        // Construye la URL de Intent emulando las reglas nativas de Android
 function buildIntentUrl(pkg, cls, flag, extrasStr) {
 
-    // Ajustes universales
     if (
         pkg === "com.android.settings" &&
         (
@@ -204,100 +202,101 @@ function buildIntentUrl(pkg, cls, flag, extrasStr) {
             cls.includes("SettingsHomepageActivity")
         )
     ) {
-        return `intent:#Intent;action=android.settings.SETTINGS;launchFlags=${flag};end`;
+        return "intent:#Intent;action=android.settings.SETTINGS;end";
     }
 
     let intent = "intent:#Intent;";
-
     intent += "action=android.intent.action.MAIN;";
     intent += `package=${pkg};`;
     intent += `component=${pkg}/${cls};`;
     intent += `launchFlags=${flag};`;
 
     if (extrasStr && extrasStr.trim()) {
-
         extrasStr.split("&").forEach(extra => {
-
             const pair = extra.split("=");
-
             if (pair.length !== 2) return;
 
             let key = pair[0].trim();
             let value = pair[1].trim();
 
-            if (key.startsWith("S.")) {
-                intent += `${key}=${encodeURIComponent(value)};`;
-            }
-            else if (key.startsWith("i.")) {
+            if (key.startsWith("i.")) {
                 intent += `${key}=${parseInt(value)};`;
-            }
-            else if (key.startsWith("B.")) {
-                intent += `${key}=${value};`;
-            }
-            else if (key.startsWith("l.")) {
-                intent += `${key}=${value};`;
-            }
-            else {
+            } else {
                 intent += `S.${key}=${encodeURIComponent(value)};`;
             }
-
         });
-        console.log(intent);
     }
 
     intent += "end";
 
+    console.log("INTENT:", intent);
     return intent;
 }
-        function loadCustomIntents() {
-            const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
-            if (saved.length > 0) {
-                customSection.style.display = 'block';
-                customButtonsGrid.innerHTML = '';
-                saved.forEach((item, index) => {
-                    const intentUrl = buildIntentUrl(item.package, item.class, item.flag || '0x10000000', item.extras || '');
-                    
-                    const container = document.createElement('div');
-                    container.className = 'btn custom-btn';
-                    container.style.borderLeftColor = '#ffcd3a';
-                    
-                    const link = document.createElement('span');
-                    link.style.cursor = 'pointer';
-                    link.innerText = `⭐ ${item.name}`;
-                    link.addEventListener('click', () => window.location.href = intentUrl);
-                    
-                    const del = document.createElement('span');
-                    del.className = 'delete-icon';
-                    del.innerText = '❌';
-                    del.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        deleteIntent(index);
-                    });
 
-                    container.appendChild(link);
-                    container.appendChild(del);
-                    customButtonsGrid.appendChild(container);
-                });
-            } else {
-                customSection.style.display = 'none';
-            }
-        }
+function launchIntent(url) {
+    const a = document.createElement("a");
+    a.href = url;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+}
 
-        function deleteIntent(index) {
-            const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
-            saved.splice(index, 1);
-            localStorage.setItem('bearGsmExpertIntents', JSON.stringify(saved));
-            loadCustomIntents();
-        }
+function loadCustomIntents() {
+    const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
 
-        document.getElementById('btnTestIntent').addEventListener('click', () => {
-            const pkg = document.getElementById('customPackage').value.trim();
-            const cls = document.getElementById('customClass').value.trim();
-            const flag = document.getElementById('customFlag').value;
-            const ext = document.getElementById('customExtras').value.trim();
-            
-            if (pkg && cls) {
-                document.getElementById('btnTestIntent').addEventListener('click', () => {
+    if (!saved.length) {
+        customSection.style.display = 'none';
+        return;
+    }
+
+    customSection.style.display = 'block';
+    customButtonsGrid.innerHTML = '';
+
+    saved.forEach((item, index) => {
+
+        const url = buildIntentUrl(
+            item.package,
+            item.class,
+            item.flag || '0x10000000',
+            item.extras || ''
+        );
+
+        const container = document.createElement('div');
+        container.className = 'btn custom-btn';
+        container.style.borderLeftColor = '#ffcd3a';
+
+        const btn = document.createElement('span');
+        btn.innerText = "⭐ " + item.name;
+        btn.style.cursor = "pointer";
+
+        btn.addEventListener('click', () => {
+            launchIntent(url);
+        });
+
+        const del = document.createElement('span');
+        del.innerText = "❌";
+        del.className = "delete-icon";
+
+        del.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteIntent(index);
+        });
+
+        container.appendChild(btn);
+        container.appendChild(del);
+        customButtonsGrid.appendChild(container);
+    });
+}
+
+function deleteIntent(index) {
+    const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
+    saved.splice(index, 1);
+    localStorage.setItem('bearGsmExpertIntents', JSON.stringify(saved));
+    loadCustomIntents();
+}
+
+// ✅ BOTÓN TEST (ARREGLADO)
+document.getElementById('btnTestIntent').addEventListener('click', () => {
 
     const pkg = document.getElementById('customPackage').value.trim();
     const cls = document.getElementById('customClass').value.trim();
@@ -309,122 +308,112 @@ function buildIntentUrl(pkg, cls, flag, extrasStr) {
         return;
     }
 
-    const intentUrl = buildIntentUrl(pkg, cls, flag, ext);
+    const url = buildIntentUrl(pkg, cls, flag, ext);
+    launchIntent(url);
+});
 
-    console.log(intentUrl);
+// SAVE
+document.getElementById('btnSaveIntent').addEventListener('click', () => {
+
+    const name = document.getElementById('customName').value.trim() || 'Actividad';
+    const pkg = document.getElementById('customPackage').value.trim();
+    const cls = document.getElementById('customClass').value.trim();
+    const flag = document.getElementById('customFlag').value;
+    const ext = document.getElementById('customExtras').value.trim();
+
+    if (!pkg || !cls) {
+        alert('Faltan campos obligatorios');
+        return;
+    }
+
+    const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
+    saved.push({ name, package: pkg, class: cls, flag, extras: ext });
+
+    localStorage.setItem('bearGsmExpertIntents', JSON.stringify(saved));
+
+    document.getElementById('customName').value = '';
+    document.getElementById('customPackage').value = '';
+    document.getElementById('customClass').value = '';
+    document.getElementById('customExtras').value = '';
+
+    loadCustomIntents();
+});
+
+// EXPORT
+document.getElementById('btnExport').addEventListener('click', () => {
+    const data = localStorage.getItem('bearGsmExpertIntents') || '[]';
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');
-    a.href = intentUrl;
-    a.style.display = 'none';
-
-    document.body.appendChild(a);
-
+    a.href = url;
+    a.download = 'backup.json';
     a.click();
-
-    document.body.removeChild(a);
-
 });
+
+// IMPORT
+document.getElementById('btnImport').addEventListener('click', () =>
+    document.getElementById('fileInput').click()
+);
+
+document.getElementById('fileInput').addEventListener('change', (e) => {
+
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (evt) {
+        try {
+            const parsed = JSON.parse(evt.target.result);
+
+            if (!Array.isArray(parsed)) throw new Error();
+
+            const valid = parsed.every(i => i.name && i.package && i.class);
+
+            if (!valid) throw new Error();
+
+            localStorage.setItem('bearGsmExpertIntents', JSON.stringify(parsed));
+
+            loadCustomIntents();
+
+            alert('Importado correctamente');
+
+        } catch (e) {
+            alert('Archivo inválido');
+        }
+    };
+
+    reader.readAsText(file);
+});
+
+// SEARCH
+document.getElementById('searchInput').addEventListener('input', (e) => {
+
+    const term = e.target.value.toLowerCase().trim();
+
+    document.querySelectorAll('.category-section').forEach(section => {
+
+        let match = false;
+
+        section.querySelectorAll('.btn').forEach(btn => {
+
+            const text = btn.textContent.toLowerCase();
+
+            if (text.includes(term)) {
+                btn.style.display = 'flex';
+                match = true;
             } else {
-                alert('Faltan el Paquete o la Clase.');
+                btn.style.display = 'none';
             }
         });
 
-        document.getElementById('btnSaveIntent').addEventListener('click', () => {
-            const name = document.getElementById('customName').value.trim() || 'Actividad Guardada';
-            const pkg = document.getElementById('customPackage').value.trim();
-            const cls = document.getElementById('customClass').value.trim();
-            const flag = document.getElementById('customFlag').value;
-            const ext = document.getElementById('customExtras').value.trim();
-
-            if (pkg && cls) {
-                const saved = JSON.parse(localStorage.getItem('bearGsmExpertIntents')) || [];
-                saved.push({ name, package: pkg, class: cls, flag, extras: ext });
-                localStorage.setItem('bearGsmExpertIntents', JSON.stringify(saved));
-                
-                // Reset inputs
-                document.getElementById('customName').value = '';
-                document.getElementById('customPackage').value = '';
-                document.getElementById('customClass').value = '';
-                document.getElementById('customExtras').value = '';
-                loadCustomIntents();
-            } else {
-                alert('Faltan campos obligatorios (Paquete/Clase).');
-            }
-        });
-
-        // Backup Engine
-        document.getElementById('btnExport').addEventListener('click', () => {
-            const data = localStorage.getItem('bearGsmExpertIntents') || '[]';
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'BearGsm_Backup_Activities.json';
-            a.click();
-        });
-
-        document.getElementById('btnImport').addEventListener('click', () => document.getElementById('fileInput').click());
-        document.getElementById('fileInput').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const parsed = JSON.parse(evt.target.result);
-if (!Array.isArray(parsed)) {
-    throw new Error("Formato inválido");
-}
-
-const valid = parsed.every(item =>
-    item.name &&
-    item.package &&
-    item.class
-);
-
-if (!valid) {
-    throw new Error("Estructura incorrecta");
-}
-
-localStorage.setItem(
-    'bearGsmExpertIntents',
-    JSON.stringify(parsed)
-);
+        section.style.display = match ? 'block' : 'none';
+    });
+});
 
 loadCustomIntents();
+</script>
 
-alert('Base de Datos importada con éxito.');
-                    }
-                } catch(err) { alert('Archivo de backup inválido.'); }
-            };
-            reader.readAsText(file);
-        });
-
-        // Buscador
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase().trim();
-            document.querySelectorAll('.category-section').forEach(section => {
-                let match = false;
-                section.querySelectorAll('.btn').forEach(btn => {
-                    if (btn.textContent.toLowerCase().includes(term) || (btn.getAttribute('href') && btn.getAttribute('href').toLowerCase().includes(term))) {
-                        btn.style.display = 'flex'; match = true;
-                    } else { btn.style.display = 'none'; }
-                });
-                section.style.display = match ? 'block' : 'none';
-            });
-        });
-
-        // PWA Setup
-        if ('serviceWorker' in navigator) {
-            const swCode = "self.addEventListener('fetch', function(e) { e.respondWith(fetch(e.request)); });";
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(blob), { scope: './' });
-        }
-
-        let defPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); defPrompt = e; document.getElementById('installBtn').style.display = 'block'; });
-        document.getElementById('installBtn').addEventListener('click', async () => { if (defPrompt) { defPrompt.prompt(); const { outcome } = await defPrompt.userChoice; if (outcome === 'accepted') document.getElementById('installBtn').style.display = 'none'; defPrompt = null; } });
-
-        loadCustomIntents();
-    </script>
 </body>
 </html>

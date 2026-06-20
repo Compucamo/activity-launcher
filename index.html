@@ -172,16 +172,16 @@
 
         // Construye la URL de Intent emulando las reglas nativas de Android
 function buildIntentUrl(pkg, cls, flag, extrasStr) {
-    // Caso especial: Ajustes Generales del Sistema
+    // REGLA DE OREJA: Si es el menú de ajustes raíz, forzamos la acción pública limpia
     if (pkg === "com.android.settings" && (cls === "com.android.settings.Settings" || cls.includes("SettingsHomepageActivity"))) {
         return `intent:#Intent;action=android.settings.SETTINGS;launchFlags=${flag};end`;
     }
     
-    // MOTOR AVANZADO: Forzado de componente con bloqueo de desvíos (Anti-Telcel y Anti-PlayStore)
-    // Usamos S.browser_fallback_url=javascript:void(0); para congelar el fallo si la app no tiene permisos
-    let base = `intent:#Intent;action=android.intent.action.VIEW;component=${pkg}/${cls};launchFlags=${flag};S.browser_fallback_url=javascript:void(0);`;
+    // Para todas las demás, usamos una estructura de componente directa y limpia.
+    // Si la actividad es pública (exported=true), se abrirá. 
+    // Si es privada, Android bloqueará la acción de forma segura en lugar de bucear a Telcel.
+    let base = `intent:#Intent;action=android.intent.action.MAIN;component=${pkg}/${cls};launchFlags=${flag};`;
     
-    // Inyección de parámetros extra si existen
     if(extrasStr && extrasStr.includes('=')) {
         const parts = extrasStr.split('&');
         parts.forEach(p => {
